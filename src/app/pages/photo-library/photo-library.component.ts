@@ -1,5 +1,6 @@
 import {
 	ChangeDetectionStrategy,
+	ChangeDetectorRef,
 	Component,
 	OnDestroy,
 	OnInit,
@@ -8,7 +9,6 @@ import { MatGridList, MatGridTile } from '@angular/material/grid-list';
 import { MediaContentService } from '../../services/media-content.service';
 import { Subscription } from 'rxjs';
 import { IPhoto } from '../../types/types';
-import { NgForOf, NgIf } from '@angular/common';
 import { PhotosListComponent } from '../../components/photos-list/photos-list.component';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
 
@@ -18,14 +18,12 @@ import { MatProgressSpinner } from '@angular/material/progress-spinner';
 	imports: [
 		MatGridList,
 		MatGridTile,
-		NgForOf,
-		NgIf,
 		PhotosListComponent,
 		MatProgressSpinner,
 	],
   templateUrl: './photo-library.component.html',
   styleUrl: './photo-library.component.scss',
-	// changeDetection: ChangeDetectionStrategy.OnPush,
+	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PhotoLibraryComponent implements OnInit, OnDestroy {
 	public photos: IPhoto[] = [];
@@ -37,7 +35,10 @@ export class PhotoLibraryComponent implements OnInit, OnDestroy {
 	private isNoPhotosToLoad = false;
 	private subscriptions: Subscription[] = [];
 
-	constructor(private mediaService: MediaContentService) {
+	constructor(
+		private mediaService: MediaContentService,
+		private cdr: ChangeDetectorRef,
+	) {
 	}
 	
 	public ngOnInit() {
@@ -68,14 +69,22 @@ export class PhotoLibraryComponent implements OnInit, OnDestroy {
 					this.isNoPhotosToLoad = true;
 				}
 
-				this.photos.push(...photos);
+				this.updateExistingPhotos(photos);
 				this.isLoadingPhoto = false;
 				this.skipItems = this.pageNumber * this.itemsPerPage;
 				this.pageNumber += 1;
-				
-				console.log('PHOTOS LIST ', this.photos);
+				this.cdr.detectChanges();
 			}),
 		);
+	}
+	
+	private updateExistingPhotos(photos: IPhoto[]): void {
+		const existingPhotos = [...this.photos];
+		existingPhotos.push(...photos);
+		// Redeclare local "photos" property to trigger
+		// the Change Detection mechanism for
+		// the child "app-photos-list" component
+		this.photos = existingPhotos;
 	}
 	
 	private unsubscribeFromAllSubscriptions(): void {

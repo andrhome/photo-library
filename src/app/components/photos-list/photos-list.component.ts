@@ -1,4 +1,5 @@
 import {
+  ChangeDetectionStrategy,
   Component,
   Input,
   output,
@@ -19,7 +20,8 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     MatProgressSpinnerModule,
   ],
   templateUrl: './photos-list.component.html',
-  styleUrl: './photos-list.component.scss'
+  styleUrl: './photos-list.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PhotosListComponent {
   @Input() photosList: IPhoto[] = [];
