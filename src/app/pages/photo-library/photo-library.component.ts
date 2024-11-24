@@ -47,8 +47,8 @@ export class PhotoLibraryComponent implements OnInit, OnDestroy {
 	private subscriptions: Subscription[] = [];
 
 	constructor(
-		private mediaService: MediaContentService,
-		private webStorage: WebStorageService,
+		public mediaService: MediaContentService,
+		public webStorage: WebStorageService,
 		private cdr: ChangeDetectorRef,
 	) {
 	}

@@ -1,10 +1,13 @@
 import { StorageItem } from '../../types/types';
 
 export class WebStorageServiceStub {
-	public getItems(): StorageItem[] {
-		return [];
+	public storage = new Map();
+
+	public getItems(key: string): StorageItem[] {
+		return this.storage.get(key) ?? [];
 	}
 	
-	public setItems(): void {
+	public setItems(key: string, data: StorageItem[]): void {
+		this.storage.set(key, data);
 	}
 }
