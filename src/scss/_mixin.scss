@@ -1,0 +1,16 @@
+@import 'variables';
+
+@mixin media-screen($screen-size) {
+  @media screen and (max-width: $screen-size) { @content; }
+}
+
+@mixin media-min-screen($screen-size) {
+  @media screen and (min-width: $screen-size) { @content; }
+}
+
+@mixin translate-to-center() {
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  left: 50%;
+}

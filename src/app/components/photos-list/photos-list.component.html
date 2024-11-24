@@ -1,0 +1,17 @@
+<div class="container">
+  <div class="photos-list">
+    <div class="scroll-block" (scroll)="onListScroll($event)">
+        @if (photosList.length) {
+          <mat-grid-list cols="3" gutterSize="1rem">
+            @for (photo of photosList; track photo.id) {
+              <mat-grid-tile>
+                <div class="photo-item">
+                  <img [src]="photo.src" [alt]="photo.title" class="photo">
+                </div>
+              </mat-grid-tile>
+            }
+          </mat-grid-list>
+        }
+    </div>
+  </div>
+</div>
