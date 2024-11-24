@@ -6,11 +6,13 @@ import {
 	OnInit,
 } from '@angular/core';
 import { MatGridList, MatGridTile } from '@angular/material/grid-list';
-import { MediaContentService } from '../../services/media-content.service';
+import { MediaContentService } from '../../services/media-content/media-content.service';
 import { Subscription } from 'rxjs';
 import { IPhoto } from '../../types/types';
 import { PhotosListComponent } from '../../components/photos-list/photos-list.component';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
+import { WebStorageService } from '../../services/web-storage/web-storage.service';
+import { AvailableStorageKeys } from '../../types/enums';
 
 @Component({
   selector: 'app-photo-library',
@@ -27,7 +29,7 @@ import { MatProgressSpinner } from '@angular/material/progress-spinner';
 })
 export class PhotoLibraryComponent implements OnInit, OnDestroy {
 	public photos: IPhoto[] = [];
-	public isLoadingPhoto = false;
+	public isLoadingPhotos = false;
 
 	private pageNumber = 1;
 	private itemsPerPage = 9;
@@ -37,6 +39,7 @@ export class PhotoLibraryComponent implements OnInit, OnDestroy {
 
 	constructor(
 		private mediaService: MediaContentService,
+		private webStorage: WebStorageService,
 		private cdr: ChangeDetectorRef,
 	) {
 	}
@@ -57,20 +60,39 @@ export class PhotoLibraryComponent implements OnInit, OnDestroy {
 		}
 	}
 	
+	public addToFavourite(photoId: string): void {
+		const photoToAdd = this.photos.find(photo => photo.id === photoId);
+		
+		if (!photoToAdd) return;
+		
+		const existingFavoritePhotos: IPhoto[] = this.webStorage.getItems(
+			AvailableStorageKeys.FavoritePhotos,
+		);
+		const photoAlreadyAdded = existingFavoritePhotos.find(
+			photo => photo.id === photoToAdd.id,
+		);
+		
+		if (photoAlreadyAdded) return;
+		
+		existingFavoritePhotos.push(photoToAdd);
+
+		this.webStorage.setItems(
+			AvailableStorageKeys.FavoritePhotos,
+			existingFavoritePhotos,
+		);
+	}
+	
 	private fetchPhotos(): void {
-		this.isLoadingPhoto = true;
+		this.isLoadingPhotos = true;
 		this.subscriptions.push(
 			this.mediaService.getPhotosList(
 				this.pageNumber,
 				this.itemsPerPage,
 				this.skipItems,
 			).subscribe((photos: IPhoto[]) => {
-				if (!photos.length) {
-					this.isNoPhotosToLoad = true;
-				}
-
 				this.updateExistingPhotos(photos);
-				this.isLoadingPhoto = false;
+				this.isNoPhotosToLoad = !photos.length;
+				this.isLoadingPhotos = false;
 				this.skipItems = this.pageNumber * this.itemsPerPage;
 				this.pageNumber += 1;
 				this.cdr.detectChanges();

@@ -25,9 +25,16 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 })
 export class PhotosListComponent {
   @Input() photosList: IPhoto[] = [];
+  @Input() isLoading: boolean = false;
+
   public onScroll = output<Event>();
+  public onClick = output<string>();
   
   public onListScroll($event: Event): void {
     this.onScroll.emit($event);
+  }
+  
+  public onItemClick(photo: IPhoto): void {
+    this.onClick.emit(photo.id);
   }
 }

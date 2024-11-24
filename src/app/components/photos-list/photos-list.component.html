@@ -5,12 +5,24 @@
           <mat-grid-list cols="3" gutterSize="1rem">
             @for (photo of photosList; track photo.id) {
               <mat-grid-tile>
-                <div class="photo-item">
-                  <img [src]="photo.src" [alt]="photo.title" class="photo">
+                <div class="photo-item" (click)="onItemClick(photo)">
+                  <img [src]="photo.src" [alt]="photo.title" class="photo item-hover">
                 </div>
               </mat-grid-tile>
             }
           </mat-grid-list>
+        } @else if (!photosList.length && !isLoading) {
+          <div class="block-flex-row--center">
+            <p>There are no photos</p>
+          </div>
+        }
+
+        @if (isLoading) {
+          <div class="load-spinner-holder">
+            <div class="load-spinner">
+              <mat-spinner></mat-spinner>
+            </div>
+          </div>
         }
     </div>
   </div>

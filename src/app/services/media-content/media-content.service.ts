@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { delay, map, Observable } from 'rxjs';
-import { IPhoto } from '../types/types';
+import { IPhoto } from '../../types/types';
 
 const RESPONSE_DELAY_MIN = 200;
 const RESPONSE_DELAY_MAX = 300;

@@ -1,18 +1,1 @@
-@import '../../../scss/mixin';
 
-.photo-library {
-  width: 100%;
-  height: 100%;
-  padding-top: 3rem;
-}
-
-.photos-list-holder {
-  width: 100%;
-  height: 100%;
-}
-
-.load-spinner-holder {
-  @include translate-to-center();
-  top: 40%;
-  z-index: 10;
-}
