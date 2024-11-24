@@ -1,6 +1,11 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { delay, map, Observable } from 'rxjs';
+import {
+  catchError,
+  delay,
+  map,
+  Observable, of,
+} from 'rxjs';
 import { IPhoto } from '../../types/types';
 
 const RESPONSE_DELAY_MIN = 200;
@@ -30,7 +35,11 @@ export class MediaContentService {
         delay(this.responseDelay),
         map((photos: IPhoto[]) => {
           const itemsCount = pageNumber * itemsPerPage;
-          return photos.slice(skipItems, itemsCount);
+          return photos?.slice(skipItems, itemsCount);
+        }),
+        catchError(err => {
+          console.error('Fetch photos ERROR: ', err);
+          return of(err);
         }),
       );
   }
