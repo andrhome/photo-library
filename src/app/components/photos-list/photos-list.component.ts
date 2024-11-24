@@ -1,10 +1,13 @@
-import { Component, Input, output, Output } from '@angular/core';
+import {
+  Component,
+  Input,
+  output,
+} from '@angular/core';
 import { IPhoto } from '../../types/types';
 import {
   MatGridList,
   MatGridTile,
 } from '@angular/material/grid-list';
-import { NgForOf, NgIf } from '@angular/common';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @Component({
@@ -14,8 +17,6 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     MatGridList,
     MatGridTile,
     MatProgressSpinnerModule,
-    NgForOf,
-    NgIf,
   ],
   templateUrl: './photos-list.component.html',
   styleUrl: './photos-list.component.scss'
