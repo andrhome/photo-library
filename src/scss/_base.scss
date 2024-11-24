@@ -58,6 +58,11 @@ body {
   height: 100%;
   max-width: $tablet;
   margin: 0 auto;
+
+  .btn-default {
+    font-size: 2rem;
+    border-radius: 12px;
+  }
 }
 
 .list-wrapper {
@@ -88,5 +93,18 @@ body {
     cursor: pointer;
     box-shadow: $light-shadow;
     transform: scale(1.05);
+  }
+}
+
+.cdk-overlay-container {
+  .mat-mdc-snack-bar-container {
+    .mdc-snackbar__label {
+      padding: 20px 8px 20px 16px;
+    }
+
+    .mdc-snackbar__label,
+    .mdc-snackbar__actions .mat-mdc-button {
+      font-size: 1.4rem;
+    }
   }
 }

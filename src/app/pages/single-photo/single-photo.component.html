@@ -1,0 +1,17 @@
+<div class="full-container">
+  <div class="container">
+    @if (photo) {
+      <div class="single-photo-holder">
+        <img [src]="photo.src" [alt]="photo.title" class="single-photo">
+      </div>
+
+      <div class="remove-btn-holder">
+        <button
+          mat-stroked-button
+          class="remove-btn btn-default"
+          (click)=removeFromFavourite(photo.id)
+        >Remove from favourites</button>
+      </div>
+    }
+  </div>
+</div>

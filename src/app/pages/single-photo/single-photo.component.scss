@@ -1,0 +1,22 @@
+.single-photo-holder {
+  height: 65%;
+  text-align: center;
+  padding: 2rem 0;
+
+  .single-photo {
+    height: 100%;
+    display: inline-block;
+    object-fit: cover;
+  }
+}
+
+.remove-btn-holder {
+  width: 100%;
+  text-align: center;
+  padding: 1rem 0;
+
+  .remove-btn {
+    font-size: 1.8rem;
+    padding: 2.4rem;
+  }
+}

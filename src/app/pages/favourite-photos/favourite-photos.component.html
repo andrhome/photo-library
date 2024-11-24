@@ -3,6 +3,7 @@
     <app-photos-list
       [photosList]="favouritePhotos"
       [isLoading]="!isLoadingPhotos"
+      (onClick)="openPhotoOnClick($event)"
     ></app-photos-list>
   </div>
 </div>

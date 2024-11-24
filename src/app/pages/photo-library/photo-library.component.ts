@@ -1,11 +1,14 @@
 import {
 	ChangeDetectionStrategy,
 	ChangeDetectorRef,
-	Component,
+	Component, inject,
 	OnDestroy,
 	OnInit,
 } from '@angular/core';
-import { MatGridList, MatGridTile } from '@angular/material/grid-list';
+import {
+	MatGridList,
+	MatGridTile,
+} from '@angular/material/grid-list';
 import { MediaContentService } from '../../services/media-content/media-content.service';
 import { Subscription } from 'rxjs';
 import { IPhoto } from '../../types/types';
@@ -13,6 +16,11 @@ import { PhotosListComponent } from '../../components/photos-list/photos-list.co
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { WebStorageService } from '../../services/web-storage/web-storage.service';
 import { AvailableStorageKeys } from '../../types/enums';
+import { findItemById } from '../../common/utils';
+import { MatSnackBar } from '@angular/material/snack-bar';
+
+/** Time of displaying a snackbar block */
+const SNACK_BAR_DURATION = 1000;
 
 @Component({
   selector: 'app-photo-library',
@@ -31,6 +39,7 @@ export class PhotoLibraryComponent implements OnInit, OnDestroy {
 	public photos: IPhoto[] = [];
 	public isLoadingPhotos = false;
 
+	private snackBar = inject(MatSnackBar);
 	private pageNumber = 1;
 	private itemsPerPage = 9;
 	private skipItems = 0;
@@ -49,7 +58,7 @@ export class PhotoLibraryComponent implements OnInit, OnDestroy {
 	}
 	
 	public ngOnDestroy() {
-		this.unsubscribeFromAllSubscriptions();
+		this.unsubscribeAll();
 	}
 	
 	public onPhotosListScroll(event: Event): void {
@@ -61,18 +70,18 @@ export class PhotoLibraryComponent implements OnInit, OnDestroy {
 	}
 	
 	public addToFavourite(photoId: string): void {
-		const photoToAdd = this.photos.find(photo => photo.id === photoId);
-		
+		const photoToAdd = findItemById<IPhoto>(this.photos, photoId);
 		if (!photoToAdd) return;
 		
 		const existingFavoritePhotos: IPhoto[] = this.webStorage.getItems(
 			AvailableStorageKeys.FavoritePhotos,
 		);
-		const photoAlreadyAdded = existingFavoritePhotos.find(
-			photo => photo.id === photoToAdd.id,
-		);
-		
-		if (photoAlreadyAdded) return;
+		const photoAlreadyAdded = findItemById<IPhoto>(existingFavoritePhotos, photoToAdd.id);
+		if (photoAlreadyAdded) {
+			const photoAlreadyAddedMsg = 'Already in favourites.';
+			this.showSnackBar(photoAlreadyAddedMsg);
+			return;
+		}
 		
 		existingFavoritePhotos.push(photoToAdd);
 
@@ -80,6 +89,8 @@ export class PhotoLibraryComponent implements OnInit, OnDestroy {
 			AvailableStorageKeys.FavoritePhotos,
 			existingFavoritePhotos,
 		);
+		const addedPhotoMsg = 'Photo was added to favourites!';
+		this.showSnackBar(addedPhotoMsg);
 	}
 	
 	private fetchPhotos(): void {
@@ -109,7 +120,14 @@ export class PhotoLibraryComponent implements OnInit, OnDestroy {
 		this.photos = existingPhotos;
 	}
 	
-	private unsubscribeFromAllSubscriptions(): void {
+	private showSnackBar(message: string): void {
+		const action = 'Ok';
+		this.snackBar.open(message, action, {
+			duration: SNACK_BAR_DURATION,
+		});
+	}
+	
+	private unsubscribeAll(): void {
 		this.subscriptions.forEach(s => s.unsubscribe());
 	}
 }
