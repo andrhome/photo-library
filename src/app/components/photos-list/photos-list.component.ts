@@ -12,7 +12,7 @@ import {
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @Component({
-  selector: 'app-photos-list',
+  selector: 'pl-photos-list',
   standalone: true,
   imports: [
     MatGridList,

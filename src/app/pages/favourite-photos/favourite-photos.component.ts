@@ -10,7 +10,7 @@ import { AvailableStorageKeys } from '../../types/enums';
 import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-favourite-photos',
+  selector: 'pl-favourite-photos',
   standalone: true,
 	imports: [
 		PhotosListComponent,

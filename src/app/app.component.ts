@@ -3,7 +3,7 @@ import { RouterOutlet } from '@angular/router';
 import { HeaderComponent } from './components/header/header.component';
 
 @Component({
-  selector: 'app-root',
+  selector: 'pl-root',
   standalone: true,
   imports: [
     RouterOutlet,

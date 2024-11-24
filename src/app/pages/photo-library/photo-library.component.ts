@@ -23,7 +23,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 const SNACK_BAR_DURATION = 1000;
 
 @Component({
-  selector: 'app-photo-library',
+  selector: 'pl-photo-library',
   standalone: true,
 	imports: [
 		MatGridList,
@@ -116,7 +116,7 @@ export class PhotoLibraryComponent implements OnInit, OnDestroy {
 		existingPhotos.push(...photos);
 		// Redeclare local "photos" property to trigger
 		// the Change Detection mechanism for
-		// the child "app-photos-list" component
+		// the child "pl-photos-list" component
 		this.photos = existingPhotos;
 	}
 	

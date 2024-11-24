@@ -6,7 +6,7 @@ import {
 } from '@angular/router';
 
 @Component({
-  selector: 'app-header',
+  selector: 'pl-header',
   standalone: true,
 	imports: [
 		MatButtonModule,

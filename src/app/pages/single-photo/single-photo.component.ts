@@ -18,7 +18,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { Subscription } from 'rxjs';
 
 @Component({
-  selector: 'app-single-photo',
+  selector: 'pl-single-photo',
   standalone: true,
   imports: [
     MatButtonModule,
