@@ -1,13 +1,12 @@
-import { TestBed } from '@angular/core/testing';
-
 import { MediaContentService } from './media-content.service';
+import { HttpClient } from '@angular/common/http';
 
 describe('MediaContentService', () => {
   let service: MediaContentService;
+  const httpClientStub = {} as HttpClient;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({});
-    service = TestBed.inject(MediaContentService);
+    service = new MediaContentService(httpClientStub);
   });
 
   it('should be created', () => {

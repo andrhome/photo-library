@@ -1,6 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { FavouritePhotosComponent } from './favourite-photos.component';
+import { Router } from '@angular/router';
+import { WebStorageService } from '../../services/web-storage/web-storage.service';
+import { WebStorageServiceStub } from '../../services/web-storage/web-storage.service.stub';
 
 describe('FavoritePhotosComponent', () => {
   let component: FavouritePhotosComponent;
@@ -8,7 +11,11 @@ describe('FavoritePhotosComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [FavouritePhotosComponent]
+      imports: [FavouritePhotosComponent],
+      providers: [
+        { provide: WebStorageService, useClass: WebStorageServiceStub },
+        { provide: Router, useValue: {} },
+      ],
     })
     .compileComponents();
 
