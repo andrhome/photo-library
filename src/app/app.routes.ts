@@ -1,24 +1,25 @@
 import { Routes } from '@angular/router';
-import { PhotoLibraryComponent } from './pages/photo-library/photo-library.component';
-import { FavouritePhotosComponent } from './pages/favourite-photos/favourite-photos.component';
-import { SinglePhotoComponent } from './pages/single-photo/single-photo.component';
 
-export const routes: Routes = [
+export const APP_ROUTES: Routes = [
 	{
 		path: '',
-		redirectTo: '/photo-library',
+		redirectTo: 'photo-library',
 		pathMatch: 'full',
 	},
 	{
 		path: 'photo-library',
-		component: PhotoLibraryComponent,
+		loadComponent: () =>
+			import('./pages/photo-library/photo-library.component')
+				.then(m => m.PhotoLibraryComponent)
 	},
 	{
 		path: 'favourite-photos',
-		component: FavouritePhotosComponent,
+		loadChildren: () =>
+			import('./pages/favourite-photos/routes/favourite-photos.routes')
+				.then(m => m.FAVOURITE_PHOTOS_ROUTES)
 	},
 	{
-		path: 'favourite-photos/:id',
-		component: SinglePhotoComponent,
-	},
+		path: '**',
+		redirectTo: 'photo-library'
+	}
 ];
